@@ -1,138 +1,144 @@
 # Delivery Operations Dashboard
 
-## Project Overview
+A Power BI analytics project analyzing quick-commerce delivery operations — covering order demand, delivery performance, operational bottlenecks, and rider workforce planning — built to turn raw operational data into decisions a delivery ops team can act on.
 
-This Power BI project analyzes delivery operations data to understand order demand, delivery performance, operational bottlenecks, and rider workforce requirements.
+![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=flat&logo=powerbi&logoColor=black)
+![Power Query](https://img.shields.io/badge/Power%20Query-217346?style=flat&logo=microsoftexcel&logoColor=white)
+![DAX](https://img.shields.io/badge/DAX-0078D4?style=flat)
+![Excel](https://img.shields.io/badge/Excel-217346?style=flat&logo=microsoftexcel&logoColor=white)
 
-The dashboard transforms raw operational data into actionable insights through data cleaning, DAX calculations, KPI tracking, and interactive visualizations.
+---
+
+## Overview
+
+This dashboard analyzes one month (June 2026) of delivery operations data to answer four core operational questions:
+
+1. **When** do orders come in, and how does demand shift across the week and day?
+2. **How well** is the business hitting its promised delivery times?
+3. **Where** in the delivery pipeline do delays actually happen?
+4. **How many riders** are needed, and when, to meet demand?
+
+The result is a 4-page interactive dashboard built on a cleaned dataset, custom DAX measures, and a consistent visual design system — built as a report, not just a set of charts.
+
+---
 
 ## Tools & Technologies
 
-- Power BI
-- Power Query
-- DAX
-- Microsoft Excel
-- Data Cleaning & Transformation
-- Data Visualization
+| Category | Tools |
+|---|---|
+| Data cleaning & transformation | Power Query (M) |
+| Calculations & KPIs | DAX |
+| Visualization | Power BI |
+| Source data | Microsoft Excel |
+
+---
 
 ## Dashboard Pages
 
 ### 1. Order Demand & Trends
+Analyzes order volume patterns across time.
 
-Analyzes overall order patterns and demand fluctuations.
+**Metrics:** Total Orders · Weekday Orders · Weekend Orders · Average Daily Orders · Peak Hour Orders
 
-Key metrics include:
-- Total Orders
-- Weekday Orders
-- Weekend Orders
-- Average Daily Orders
-- Peak Hour Orders
-
-The page also analyzes hourly demand, weekday patterns, and daily order trends.
+**Visuals:** Weekday vs. weekend split, orders by hour, orders by weekday, daily order trend over the month.
 
 ### 2. Delivery & ETA Performance
+Evaluates how actual delivery performance compares to the promised ETA.
 
-Evaluates delivery efficiency and performance against expected delivery times.
+**Metrics:** Delivered Orders · On-Time Delivery % · Late Delivery % · Average Delay · Average Delivery Time · ETA Accuracy
 
-Key metrics include:
-- Delivered Orders
-- On-Time Delivery %
-- Late Delivery %
-- Average Delay
-- Average Delivery Time
-- ETA Accuracy
-
-The page compares expected ETA with actual delivery time and analyzes delivery-time distribution.
+**Visuals:** On-time vs. delayed breakdown, average delay by weekday, delivery-time distribution, expected ETA vs. actual delivery time.
 
 ### 3. Operational Bottlenecks
+Identifies which stage of the delivery pipeline — and which operational factors — contribute most to delay.
 
-Identifies stages and operational factors contributing to delivery delays.
+**Metrics:** Avg. Packing Time · Avg. Pickup Time · Avg. Out-for-Delivery Time · Avg. Reach Time · Avg. Final Delivery Time · Longest Rider Delay
 
-The analysis includes:
-- Average Packing Time
-- Average Pickup Time
-- Average Out-for-Delivery Time
-- Average Reach Time
-- Average Final Delivery Time
-- Longest Delivery Time
-- Rider Delay Analysis
-- Top Delay Reasons
+**Visuals:** Average duration by pipeline stage, top delay reasons, longest individual rider delays with order-level detail.
 
 ### 4. Rider Workforce Planning
+Estimates rider requirements based on observed order demand and evaluates current rider utilization.
 
-Analyzes rider utilization and estimates workforce requirements based on order demand.
+**Metrics:** Active Riders · Orders per Rider · Unassigned Orders · Peak Riders Needed
 
-Key metrics include:
-- Active Riders
-- Orders per Rider
-- Unassigned Orders
-- Peak Riders Needed
+**Visuals:** Riders needed by hour, orders by rider, assigned vs. unassigned orders, hourly demand vs. estimated rider requirement.
 
-The dashboard compares hourly order demand with estimated rider requirements.
+---
 
 ## Data Preparation
 
-The dataset was cleaned and transformed using Power Query. Major transformations included:
+Raw data was cleaned and transformed in Power Query before modeling. Key steps:
 
-- Handling missing and null values
-- Replacing invalid placeholder values
-- Correcting data types
-- Removing duplicate records
-- Converting duration fields into minutes
-- Creating date and time attributes
-- Creating weekday and weekend classifications
-- Creating delivery categories
-- Creating rider assignment categories
+- Removed duplicate records
+- Handled missing and null values
+- Replaced invalid placeholder values
+- Corrected data types
+- Converted text-format durations into numeric minutes
+- Derived date, hour, weekday, and weekend attributes
+- Created delivery-status categories (On-Time / Delayed / Unknown)
+- Created rider assignment categories (Assigned / Unassigned)
+
+---
 
 ## Key Insights
 
-- Approximately 72% of delivered orders were completed on time.
-- Peak hourly demand reached approximately 331 orders.
-- Delivery performance varies across different days of the week.
-- Operational stage durations help identify potential delivery bottlenecks.
-- Rider requirements increase significantly during peak demand periods.
-- A portion of orders remained unassigned, indicating opportunities for improved rider allocation.
+- **~72%** of delivered orders were completed within the promised ETA; the remaining ~28% were delayed.
+- Peak hourly demand reached approximately **331 orders**, concentrated in the afternoon–evening window.
+- **Sunday and Thursday** show the highest average delivery delays, while Monday and Friday perform best.
+- Delay duration varies noticeably by pipeline stage, pointing to specific operational stages as primary bottlenecks rather than delays being evenly distributed.
+- Rider requirements scale sharply with demand — the gap between available and needed riders widens most during peak hours.
+- A meaningful share of orders went **unassigned**, indicating a gap between rider capacity and order volume during peak periods.
+
+---
 
 ## Rider Capacity Assumption
 
-Rider requirements were estimated assuming that one rider can handle approximately **three orders per hour**.
+Rider workforce estimates assume **one rider can handle approximately 3 orders per hour**, based on observed average delivery and turnaround times.
 
-Based on a peak demand of approximately **331 orders per hour**, the estimated peak workforce requirement is approximately **111 riders**.
+At peak demand of **~331 orders/hour**, this implies a peak requirement of approximately **111 active riders** — compared to 173 currently active riders, suggesting scheduling/shift alignment, rather than headcount, is the more immediate lever for reducing unassigned orders.
 
-## Data Quality Limitations
+---
 
-Some delay reasons are recorded as free-text entries and may contain inconsistent or unclear descriptions. These values were retained where appropriate to preserve the original source data.
+## Data Quality Notes
 
-Extreme duration values were reviewed and handled at the visualization level where necessary to prevent outliers from distorting operational analysis.
+- Delay reasons are captured as free-text entries by riders/ops staff and were **retained in their original form** to preserve source fidelity rather than being reclassified. As a result, some entries have inconsistent phrasing or overlapping meaning (e.g., variations in how "traffic issue" is written).
+- A small number of extreme duration outliers (e.g., cancelled or test orders) were identified during analysis and handled at the visualization level — filtered or capped where needed — so they don't distort the operational metrics they'd otherwise skew.
+
+---
 
 ## Dashboard Preview
 
 ### Order Demand & Trends
-
 ![Order Demand & Trends](screenshots/order-demand-trends.png)
 
 ### Delivery & ETA Performance
-
 ![Delivery & ETA Performance](screenshots/delivery-eta-performance.png)
 
 ### Operational Bottlenecks
-
 ![Operational Bottlenecks](screenshots/operational-bottlenecks.png)
 
 ### Rider Workforce Planning
-
 ![Rider Workforce Planning](screenshots/rider-workforce-planning.png)
+
+---
 
 ## Repository Structure
 
+```
 Delivery-Operations-Dashboard/
-- README.md
-- Delivery_Operations_Dashboard.pbix
-- screenshots/
-- dataset/
+├── README.md
+├── Delivery_Operations_Dashboard.pbix
+├── screenshots/
+│   ├── order-demand-trends.png
+│   ├── delivery-eta-performance.png
+│   ├── operational-bottlenecks.png
+│   └── rider-workforce-planning.png
+└── dataset/
+```
+
+---
 
 ## Author
 
 **Anjali Singh**
-
-Power BI | Data Analytics | Data Visualization
+Power BI · Data Analytics · Data Visualization
