@@ -1,0 +1,3 @@
+Analyze the provided operations dataset and identify key operational insights along with recommendations to improve delivery performance and rider utilization.
+
+Deliverables: Prepare a report (Google Slides, PDF, or Notion) covering the following analyses. Support your findings with charts, pivot tables, or calculations wherever applicable.
